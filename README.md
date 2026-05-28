@@ -1,10 +1,10 @@
-# 🚁 Autonomous Visual Tracking System — DJI Tello + YOLOv8
+# Autonomous Visual Tracking System - DJI Tello + YOLOv8
 
 > Real-time person detection and autonomous drone control using computer vision and deep learning.
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 This project implements an **autonomous visual control system** on a DJI Tello drone. The drone detects and tracks a person in real time using a YOLOv8 object detection model, continuously adjusting its position to keep the target centered in frame — without any manual flight input.
 
