@@ -6,7 +6,7 @@
 
 ## Project Overview
 
-This project implements an **autonomous visual control system** on a DJI Tello drone. The drone detects and tracks a person in real time using a YOLOv8 object detection model, continuously adjusting its position to keep the target centered in frame — without any manual flight input.
+This project implements an **autonomous visual control system** on a DJI Tello drone. The drone detects and tracks a person in real time using a YOLOv8 object detection model, continuously adjusting its position to keep the target centered in frame - without any manual flight input.
 
 This was developed as a **Master's final year project** in Automotive Embedded Systems at ESIGELEC, Rouen, France.
 
@@ -119,7 +119,7 @@ The core of this project is a **perception-actuation closed loop**:
 6. The Tello's onboard ESCs execute the commands via motor speed adjustments
 7. Loop repeats for the next frame
 
-This is a form of **visual servoing** — controlling a robot's motion using visual feedback as the error signal.
+This is a form of **visual servoing** - controlling a robot's motion using visual feedback as the error signal.
 
 ---
 
@@ -141,7 +141,7 @@ This is a form of **visual servoing** — controlling a robot's motion using vis
 ## Challenges & How We Addressed Them
 
 ### 1. Real-Time Processing Latency
-**Problem:** YOLOv8 inference on CPU caused frame processing to drop to 10–15 FPS, meaning the control loop was reacting to frames already 100ms+ old.
+**Problem:** YOLOv8 inference on CPU caused frame processing to drop to 10-15 FPS, meaning the control loop was reacting to frames already 100ms+ old.
 
 **Solution:** Decoupled frame capture and inference into separate threads. The video buffer filled continuously while inference ran independently, reducing effective latency.
 
@@ -153,7 +153,7 @@ This is a form of **visual servoing** — controlling a robot's motion using vis
 ### 3. Wireless Communication Latency
 **Problem:** UDP commands sent over Wi-Fi introduced variable delay in the control loop, causing the drone to overshoot corrections.
 
-**Solution:** Tuned movement command magnitudes and added dead-zone thresholds — small positional errors below a threshold did not trigger movement commands, preventing oscillation.
+**Solution:** Tuned movement command magnitudes and added dead-zone thresholds - small positional errors below a threshold did not trigger movement commands, preventing oscillation.
 
 ### 4. Detection Precision
 **Problem:** YOLOv8 detection confidence dropped in low light, partial occlusion, and at large distances.
@@ -163,13 +163,13 @@ This is a form of **visual servoing** — controlling a robot's motion using vis
 ### 5. Payload Capacity
 **Problem:** Tello's 80g weight limit meant no additional sensors could be mounted.
 
-**Solution:** Relied entirely on the onboard camera as the sole sensor — demonstrating that a single-sensor visual control loop can be effective with the right processing pipeline.
+**Solution:** Relied entirely on the onboard camera as the sole sensor - demonstrating that a single-sensor visual control loop can be effective with the right processing pipeline.
 
 ---
 
 ## Results
 
-- ✅ Successful real-time person detection at 15–30 FPS depending on scene complexity
+- ✅ Successful real-time person detection at 15-30 FPS depending on scene complexity
 - ✅ Autonomous person tracking with drone maintaining target in frame center
 - ✅ Object and obstacle annotation on live video feed
 - ✅ Controlled autonomous landing after defined tracking duration
@@ -180,7 +180,7 @@ This is a form of **visual servoing** — controlling a robot's motion using vis
 ## Lessons Learned
 
 - Practical implementation and SDK integration of the DJI Tello drone platform
-- Real-time constraints in embedded vision systems — where the bottleneck actually is
+- Real-time constraints in embedded vision systems - where the bottleneck actually is
 - YOLOv8 model loading, inference optimization, and confidence threshold tuning
 - Multithreaded Python architecture for parallel video capture and processing
 - The impact of wireless communication latency on closed-loop control systems
