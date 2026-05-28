@@ -47,7 +47,7 @@ The system follows a classical embedded architecture with three distinct layers:
 │         ESCs (Electronic Speed Controllers)         │
 │         4x Brushless DC motors                      │
 └─────────────────────────────────────────────────────┘
-![System Flowchart](Autonomous-drone-flowchart.png)
+![System Flowchart](Autonoumous-drone-flowchart.png)
 ```
 
 ---
