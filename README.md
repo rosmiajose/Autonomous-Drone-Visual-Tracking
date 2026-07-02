@@ -17,7 +17,7 @@ This was developed as a **Master's final year project** in Automotive Embedded S
 - Design and develop a **mobile robot platform with visual control**
 - Implement **real-time object and person detection** on a live drone video stream
 - Build a **closed-loop visual control system**: perception → decision → actuation
-- Demonstrate **multi-sensor fusion** with camera as the primary sensor
+- Demonstrate single-sensor visual control using the onboard camera as the sole input to the perception and control pipeline
 - Achieve **autonomous target tracking** with obstacle awareness
 
 ---
@@ -47,10 +47,9 @@ The system follows a classical embedded architecture with three distinct layers:
 │         ESCs (Electronic Speed Controllers)         │
 │         4x Brushless DC motors                      │
 └─────────────────────────────────────────────────────┘
-![System Flowchart](Autonoumous-drone-flowchart.png)
 ```
 
----
+![System Flowchart](Autonoumous-drone-flowchart.png)
 
 ## Software Pipeline (Control Flow)
 
@@ -99,7 +98,7 @@ START
 | Computer Vision | OpenCV |
 | Drone Control Library | DJITelloPy |
 | Communication Protocol | Wi-Fi / UDP |
-| Processing | Multithreaded Python (frame capture + inference) |
+| Processing | Python 3 with real-time frame capture via DJITelloPy and synchronous YOLOv8 inference |
 
 ---
 
@@ -143,7 +142,7 @@ This is a form of **visual servoing** - controlling a robot's motion using visua
 ### 1. Real-Time Processing Latency
 **Problem:** YOLOv8 inference on CPU caused frame processing to drop to 10-15 FPS, meaning the control loop was reacting to frames already 100ms+ old.
 
-**Solution:** Decoupled frame capture and inference into separate threads. The video buffer filled continuously while inference ran independently, reducing effective latency.
+**Solution:** Leveraged DJITelloPy's internal background frame capture, allowing inference to run synchronously on the latest available frame without blocking the video stream.
 
 ### 2. Battery Life Constraints
 **Problem:** DJI Tello offers only ~13 minutes of flight time, severely limiting testing windows.
@@ -158,7 +157,7 @@ This is a form of **visual servoing** - controlling a robot's motion using visua
 ### 4. Detection Precision
 **Problem:** YOLOv8 detection confidence dropped in low light, partial occlusion, and at large distances.
 
-**Solution:** Used YOLOv8n (nano) variant for speed, with a confidence threshold filter to ignore low-confidence detections and prevent false positive tracking.
+**Solution:** Used YOLOv8s (small) variant balancing speed and accuracy. Detection confidence was managed by filtering results to class 0 (person) only, ignoring all other detected object classes.
 
 ### 5. Payload Capacity
 **Problem:** Tello's 80g weight limit meant no additional sensors could be mounted.
@@ -182,7 +181,7 @@ This is a form of **visual servoing** - controlling a robot's motion using visua
 - Practical implementation and SDK integration of the DJI Tello drone platform
 - Real-time constraints in embedded vision systems - where the bottleneck actually is
 - YOLOv8 model loading, inference optimization, and confidence threshold tuning
-- Multithreaded Python architecture for parallel video capture and processing
+- Real-time frame capture using DJITelloPy's background thread with synchronous YOLOv8 inference pipeline
 - The impact of wireless communication latency on closed-loop control systems
 - Importance of testing pipeline on recorded data before live hardware deployment
 
